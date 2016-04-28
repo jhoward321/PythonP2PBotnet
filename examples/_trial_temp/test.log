@@ -1,0 +1,13 @@
+2016-04-26 00:00:38-0500 [-] Log opened.
+2016-04-26 00:00:38-0500 [-] --> kademlia.tests.test_node.NodeHeapTest.test_iteration <--
+2016-04-26 00:00:38-0500 [-] --> kademlia.tests.test_node.NodeHeapTest.test_maxSize <--
+2016-04-26 00:00:38-0500 [-] --> kademlia.tests.test_node.NodeHeapTest.test_remove <--
+2016-04-26 00:00:38-0500 [-] --> kademlia.tests.test_node.NodeTest.test_distanceCalculation <--
+2016-04-26 00:00:38-0500 [-] --> kademlia.tests.test_node.NodeTest.test_longID <--
+2016-04-26 00:00:38-0500 [-] --> kademlia.tests.test_routing.KBucketTest.test_addNode <--
+2016-04-26 00:00:38-0500 [-] --> kademlia.tests.test_routing.KBucketTest.test_inRange <--
+2016-04-26 00:00:38-0500 [-] --> kademlia.tests.test_routing.KBucketTest.test_split <--
+2016-04-26 00:00:38-0500 [-] --> kademlia.tests.test_routing.RoutingTableTest.test_addContact <--
+2016-04-26 00:00:38-0500 [-] --> kademlia.tests.test_utils.OrderedSetTest.test_order <--
+2016-04-26 00:00:38-0500 [-] --> kademlia.tests.test_utils.UtilsTest.test_digest <--
+2016-04-26 00:00:38-0500 [-] --> kademlia.tests.test_utils.UtilsTest.test_sharedPrefix <--
