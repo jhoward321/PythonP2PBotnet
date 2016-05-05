@@ -1,14 +1,13 @@
-import os, sys, socket
+import os, sys, requests
 
+#Upload file using requests library for easier multipart data encryption POST request
 def upload(host, port, filepath):
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect((host, port))
+    url = "http://"+host+":"+str(port)
     fp = open(filepath, 'rb')
-    line = fp.read(1024)
-    while(line):
-        sock.send(line)
-        line = fp.read(1024)
-    sock.close()
+    files = {'file':fp}
+    r = requests.post(url, files=files)
+    
+    fp.close()
     
 #use: python upload.py [host] [port] [filepath]
 def main():

@@ -1,22 +1,22 @@
-import os, sys, socket
-
-def sendGETrequest(sock, host, filepath):
-    sock.send("GET /"+filepath+" HTTP/1.1\r\nHost: " + host + "\r\n\r\n")
+import os, sys, httplib
 
 def download(host, port, filepath):
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect((host, port))
-   
-    sendGETrequest(sock, host, filepath)
+    conn = httplib.HTTPConnection(host, port)
+    conn.request("GET", "/"+filepath)
 
     fp = open(filepath, 'wb')
+
+    resp =conn.getresponse()
+
+    #read 4096 bytes at a time
+    block_size = 4096
+    buffer = resp.read(block_size)
+    while(buffer):
+        fp.write(buffer)
+        buffer = resp.read(block_size)
     
-    line = sock.recv(1024)
-    while(line)
-        fp.write(line)
-        line = sock.recv(1024)
     fp.close()
-    sock.close()
+    conn.close()
     
 #use: python download.py [host] [port] [filepath]
 def main():
