@@ -20,4 +20,4 @@ def main():
     upload(host, port, filepath)
 
 if __name__ == '__main__':
-    main();
+    main()
