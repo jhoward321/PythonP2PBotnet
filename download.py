@@ -7,7 +7,8 @@ def download(host, port, filepath):
     fp = open(filepath, 'wb')
 
     resp =conn.getresponse()
-   
+
+    #read 4096 bytes at a time
     block_size = 4096
     buffer = resp.read(block_size)
     while(buffer):

@@ -1,5 +1,6 @@
 import os, sys, requests
 
+#Upload file using requests library for easier multipart data encryption POST request
 def upload(host, port, filepath):
     url = "http://"+host+":"+str(port)
     fp = open(filepath, 'rb')

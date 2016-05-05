@@ -48,7 +48,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         except IOError:
             self.send_error(500,'Internal Server Error: Upload Failed')
 
-def main(port):
+def launchServer(port):
     try:
         server = HTTPServer(('',port), RequestHandler)
         print "Starting file server"
@@ -57,8 +57,11 @@ def main(port):
         print "Shutting down server"
         server.socket.close()
 
-if __name__ == '__main__':
+def main():
     if len(sys.argv) != 2:
         sys.exit(1)
     port = int(sys.argv[1])
-    main(port)
+    launchServer(port)    
+
+if __name__ == '__main__':
+    main()
