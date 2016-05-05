@@ -1,5 +1,6 @@
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
-import cgi, sys, os
+from SocketServer import ThreadingMixIn
+import cgi, sys, os, threading
 
 class RequestHandler(BaseHTTPRequestHandler):
 
@@ -48,9 +49,12 @@ class RequestHandler(BaseHTTPRequestHandler):
         except IOError:
             self.send_error(500,'Internal Server Error: Upload Failed')
 
+class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
+    """Handle requests in a seperate thread."""
+
 def launchServer(port):
     try:
-        server = HTTPServer(('',port), RequestHandler)
+        server = ThreadedHTTPServer(('',port), RequestHandler)
         print "Starting file server"
         server.serve_forever()
     except KeyboardInterrupt:
