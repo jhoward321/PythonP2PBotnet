@@ -15,10 +15,10 @@ def attack(host, port):
     sock.close()
     return
 
-if len(sys.argv) != 2:
+if len(sys.argv) != 3:
     sys.exit(1)
 host = sys.argv[1]
-port = sys.argv[2]
+port = int(sys.argv[2])
 threads = []
 for i in range(4):
     t = threading.Thread(target=attack, args = (host, port,))
