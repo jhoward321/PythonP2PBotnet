@@ -14,6 +14,7 @@ class SlaveDriver(basic.LineReceiver):
     from os import linesep as delimiter
     import hashlib
     
+    
     def __init__(self,kserver,key):
     	self.kserver = kserver #kserver is our kademlia DHT
         self.key = key #key is the hash of the secret string where new nodes announce themselves to a botmaster
