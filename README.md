@@ -6,9 +6,9 @@ This project is a proof of concept P2P botnet written in Python. It was a final 
 
 ##Features
 
-###Dependencies
+##Dependencies
 
-####How to Run
+##How to Run
 
 botnet.py spawns a p2p node that will communicate with other nodes. Using python kademlia library
 
