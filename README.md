@@ -11,6 +11,8 @@ Features
 Authors
 ETC
 
+##Features
+
 ##Getting Started
 
 This P2P botnet requires Python 2.7 and the following two Python libraries:
@@ -27,12 +29,16 @@ Windows and MacOS have not been tested but should work if Python 2.7 has been in
 pip install kademlia
 ```
 
-In addition to the requirements to run the project, the botnet also needs 3 different machines that can communicate over a network. This can be done in virtual machines or physical machines, but each machine must be able to communicate with the other machines and must have the above dependencies installed.
+In addition to the requirements to run the project, the botnet also needs three different machines that can communicate over a network. This can be done in virtual machines or physical machines, but each machine must be able to communicate with the other machines and must have the above dependencies installed.
+
+##Usage
+
+The botnet consists of three primary components:
+* botnet.py - client node that communicates with other nodes and waits for commands from a commander
+* commander.py - command module to send commands to enslaved nodes in the botnet
+* server.tac - a kademlia server for clients to bootstrap into the network. This is only needed if do not have an existing kademlia network in place.
 
 
-##Features
-
-##How to Run
 
 botnet.py spawns a p2p node that will communicate with other nodes. Using python kademlia library
 
