@@ -40,6 +40,7 @@ The botnet consists of three primary components:
 
 To use the botnet, perform the following commands on 3 separate machines.
 * Step 1: Start Bootstrap Server
+*Default bootstrap port is 8468, this can be changed in server.tac*
 ```
 twistd -noy server.tac
 ```
