@@ -83,6 +83,10 @@ There are a number of ways that this botnet could be improved. This was my first
 * [Dhyaanesh Mullagur](https://github.com/dionesh) - *Bitcoin mining module* - mdhyanu@gmail.com
 * [James Zhen](https://github.com/jzhen4) - *DDOS, upload, download modules* - jzhen4@illinois.edu
 
+##License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
 [Kademlia]:https://github.com/bmuller/kademlia
 [Twisted]:https://twistedmatrix.com/trac/
 [Kademlia distributed hash table]:https://pdos.csail.mit.edu/~petar/papers/maymounkov-kademlia-lncs.pdf
