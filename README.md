@@ -16,8 +16,8 @@ This P2P botnet requires Python 2.7 and the following two Python libraries:
 
 On an Ubuntu machine all of the requirements can be installed by running the following two commands:
 ```
-$sudo apt-get install python-pip
-$pip install kademlia
+$ sudo apt-get install python-pip
+$ pip install kademlia
 ```
 
 ##How to Run
