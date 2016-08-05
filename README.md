@@ -15,10 +15,10 @@ This P2P botnet requires Python 2.7 and the following two Python libraries:
 * [Twisted] - an event-driven asynchronous network engine written in Python.
 
 On an Ubuntu machine all of the requirements can be installed by running the following two commands:
-'''
+```
 $sudo apt-get install python-pip
 $pip install kademlia
-'''
+```
 
 ##How to Run
 
