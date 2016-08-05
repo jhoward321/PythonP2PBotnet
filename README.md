@@ -38,8 +38,6 @@ The botnet consists of three primary components:
 * commander.py - command module to send commands to enslaved nodes in the botnet
 * server.tac - a kademlia server for clients to bootstrap into the network
 
-In addition to the above components, there are several example modules that can be executed by the botnet such as a ddos attack module, a keylogger module, and a bitcoin mining module.
-
 To use the botnet, perform the following commands on 3 separate machines.
 * Step 1: Start Bootstrap Server
 ```
@@ -54,23 +52,24 @@ python commander.py [bootstrap ip][bootstrap port][commander port]
 python botnet.py [bootstrap ip][bootstrap port][botnet port]
 ```
 
+In addition to the above components, there are several example modules that can be executed by the botnet such as a ddos attack module, a keylogger module, and a bitcoin mining module. Additional modules could easily be added. 
 
-botnet.py spawns a p2p node that will communicate with other nodes. Using python kademlia library
+* botnet.py spawns a p2p node that will communicate with other nodes. Using python kademlia library
 
-keylogger.py - takes in an argument for a logging directory and will create log files in that folder. Each log file will be named based off the window that key was recording from. This makes it easier to interprete what program was using what keystrokes.
+* keylogger.py - takes in an argument for a logging directory and will create log files in that folder. Each log file will be named based off the window that key was recording from. This makes it easier to interprete what program was using what keystrokes.
 
-ddos.py - Takes in two arguments (hostname and port) and will establish 4 connections to the target in seperate threads. Each connection will then spam 1 million GET requests to the target address in an attempt to overload the server.
+* ddos.py - Takes in two arguments (hostname and port) and will establish 4 connections to the target in seperate threads. Each connection will then spam 1 million GET requests to the target address in an attempt to overload the server.
 
-upload.py
+*upload.py
 Use: python upload.py [host] [port] [filepath]
 Requires requests library. Can be installed from: pip install requests
 Uploads the file at filepath to target server using multipart/form-data Post request
 
-download.py
+* download.py
 Use: python download.py [host] [port] [filepath]
 GET requests file from target server
 
-fileserver.py
+*fileserver.py
 Use: python fileserver.py [port]
 Simple HTTPServer to handle GET/download requests and POST/upload requests. GET requests pull files from the filehost directory. Upload request files get stored in /filedump/[client_ip] directory.
 
