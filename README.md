@@ -38,6 +38,7 @@ The botnet consists of three primary components:
 * commander.py - command module to send commands to enslaved nodes in the botnet
 * server.tac - a kademlia server for clients to bootstrap into the network
 
+Included are several example programs that can be executed by the botnet. 
 
 botnet.py spawns a p2p node that will communicate with other nodes. Using python kademlia library
 
@@ -58,21 +59,16 @@ fileserver.py
 Use: python fileserver.py [port]
 Simple HTTPServer to handle GET/download requests and POST/upload requests. GET requests pull files from the filehost directory. Upload request files get stored in /filedump/[client_ip] directory.
 
-https://pdos.csail.mit.edu/~petar/papers/maymounkov-kademlia-lncs.pdf
-https://github.com/bmuller/kademlia
 
 ##Possible Improvements
 
 There are a number of ways that this botnet could be improved. This was my first time learning the Twisted framework, so some of the code structure could be improved, primarily the botnet.py code. In addition I would add more security features including digitally signed commands, and more unpredictable check in hash locations. This project was a quick and dirty proof of concept that was quickly hacked together. Another improvement I would have made would be to improve the module section for botnet commands. Right now the botnet is sending cleartext commands in the DHT but these should really be encrypted, signed, and possibly serializable objects. The commands were thrown in after the basic networking architecture was implemented, and the example modules were developed separately so that we had to hack together a quick and dirty solution to get them to play together.
 
 ##Authors
-* [James Howard] - jhoward321@gmail.com
-* [Dhyaanesh Mullagur] - mdhyanu@gmail.com
-* [James Zhen] - jzhen4@illinois.edu
+* [James Howard](https://github.com/jhoward321) - *botnet implementation and keylogging module* - jhoward321@gmail.com
+* [Dhyaanesh Mullagur](https://github.com/dionesh) - *Bitcoin mining module* - mdhyanu@gmail.com
+* [James Zhen](https://github.com/jzhen4) - *DDOS, upload, download modules* - jzhen4@illinois.edu
 
 [Kademlia]:https://github.com/bmuller/kademlia
 [Twisted]:https://twistedmatrix.com/trac/
 [Kademlia distributed hash table]:https://pdos.csail.mit.edu/~petar/papers/maymounkov-kademlia-lncs.pdf
-[Dhyaanesh Mullagur]:https://github.com/dionesh
-[James Zhen]:https://github.com/jzhen4
-[James Howard]:https://github.com/jhoward321
