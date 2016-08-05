@@ -38,7 +38,22 @@ The botnet consists of three primary components:
 * commander.py - command module to send commands to enslaved nodes in the botnet
 * server.tac - a kademlia server for clients to bootstrap into the network
 
-Included are several example programs that can be executed by the botnet. 
+In addition to the above components, there are several example modules that can be executed by the botnet such as a ddos attack module, a keylogger module, and a bitcoin mining module.
+
+To use the botnet, perform the following commands on 3 separate machines.
+* Step 1: Start Bootstrap Server
+```
+twistd -noy server.tac
+```
+* Step 2: Start Command Module
+```
+python commander.py [bootstrap ip][bootstrap port][commander port]
+```
+* Step 3: Start Botnet Client
+```
+python botnet.py [bootstrap ip][bootstrap port][botnet port]
+```
+
 
 botnet.py spawns a p2p node that will communicate with other nodes. Using python kademlia library
 
@@ -65,7 +80,7 @@ Simple HTTPServer to handle GET/download requests and POST/upload requests. GET 
 There are a number of ways that this botnet could be improved. This was my first time learning the Twisted framework, so some of the code structure could be improved, primarily the botnet.py code. In addition I would add more security features including digitally signed commands, and more unpredictable check in hash locations. This project was a quick and dirty proof of concept that was quickly hacked together. Another improvement I would have made would be to improve the module section for botnet commands. Right now the botnet is sending cleartext commands in the DHT but these should really be encrypted, signed, and possibly serializable objects. The commands were thrown in after the basic networking architecture was implemented, and the example modules were developed separately so that we had to hack together a quick and dirty solution to get them to play together.
 
 ##Authors
-* [James Howard](https://github.com/jhoward321) - *botnet implementation and keylogging module* - jhoward321@gmail.com
+* [James Howard](https://github.com/jhoward321) - *Botnet implementation and keylogging module* - jhoward321@gmail.com
 * [Dhyaanesh Mullagur](https://github.com/dionesh) - *Bitcoin mining module* - mdhyanu@gmail.com
 * [James Zhen](https://github.com/jzhen4) - *DDOS, upload, download modules* - jzhen4@illinois.edu
 
