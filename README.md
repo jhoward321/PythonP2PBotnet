@@ -63,9 +63,9 @@ https://github.com/bmuller/kademlia
 
 
 ##Authors
-*James Howard
-*[Dhyaanesh Mullagur] - mdhyanu@gmail.com
-*[James Zhen]
+* James Howard
+* [Dhyaanesh Mullagur] - mdhyanu@gmail.com
+* [James Zhen]
 
 [Kademlia]:https://github.com/bmuller/kademlia
 [Twisted]:https://twistedmatrix.com/trac/
