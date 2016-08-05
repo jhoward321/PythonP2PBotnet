@@ -51,6 +51,8 @@ twistd -noy server.tac
 ```
 python commander.py [bootstrap ip][bootstrap port][commander port]
 ```
+*Note: default bootstrap port is 8468, this can be changed in server.tac*
+
 * Step 3: Start Botnet Client
 ```
 python botnet.py [bootstrap ip][bootstrap port][botnet port]
