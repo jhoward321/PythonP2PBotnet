@@ -14,7 +14,11 @@ This P2P botnet requires Python 2.7 and the following two Python libraries:
 * [Kademlia] - a Python implementation of the [Kademlia distributed hash table].
 * [Twisted] - an event-driven asynchronous network engine written in Python.
 
-Python 2.7, Twisted (pip install twisted)
+On an Ubuntu machine all of the requirements can be installed by running the following two commands:
+'''
+$sudo apt-get install python-pip
+$pip install kademlia
+'''
 
 ##How to Run
 
