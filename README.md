@@ -85,7 +85,7 @@ There are a number of ways that this botnet could be improved. This was my first
 
 ##License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
 [Kademlia]:https://github.com/bmuller/kademlia
 [Twisted]:https://twistedmatrix.com/trac/
