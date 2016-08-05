@@ -21,11 +21,12 @@ This P2P botnet requires Python 2.7 and the following two Python libraries:
 
 On an Ubuntu machine all of the requirements can be installed by running the following two commands:
 ```
-$ sudo apt-get install python-pip
+$ sudo apt-get install python-pip python-twisted-core
 $ pip install kademlia
 ```
 Windows and MacOS have not been tested but should work if Python 2.7 has been installed:
 ```
+pip install twisted
 pip install kademlia
 ```
 
@@ -52,6 +53,7 @@ python commander.py [bootstrap ip][bootstrap port][commander port]
 ```
 python botnet.py [bootstrap ip][bootstrap port][botnet port]
 ```
+At this point you should have 3 different windows open.
 
 In addition to the above components, there are several example modules that can be executed by the botnet such as a ddos attack module, a keylogger module, and a bitcoin mining module. Additional modules could easily be added. 
 
