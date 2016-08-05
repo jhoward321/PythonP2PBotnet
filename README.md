@@ -4,9 +4,17 @@ This project is a proof of concept P2P botnet written in Python. It was a final 
 
 ##Getting Started
 
+
+
 ##Features
 
 ##Dependencies
+
+This P2P botnet requires Python 2.7 and the following two Python libraries:
+* [Kademlia] - a Python implementation of the [Kademlia distributed hash table].
+* [Twisted] - an event-driven asynchronous network engine written in Python.
+
+Python 2.7, Twisted (pip install twisted)
 
 ##How to Run
 
@@ -28,3 +36,14 @@ GET requests file from target server
 fileserver.py
 Use: python fileserver.py [port]
 Simple HTTPServer to handle GET/download requests and POST/upload requests. GET requests pull files from the filehost directory. Upload request files get stored in /filedump/[client_ip] directory.
+
+https://pdos.csail.mit.edu/~petar/papers/maymounkov-kademlia-lncs.pdf
+https://github.com/bmuller/kademlia
+
+
+##Authors
+James Howard
+
+[Kademlia]:https://github.com/bmuller/kademlia
+[Twisted]:https://twistedmatrix.com/trac/
+[Kademlia distributed hash table]:https://pdos.csail.mit.edu/~petar/papers/maymounkov-kademlia-lncs.pdf
