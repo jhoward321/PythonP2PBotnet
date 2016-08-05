@@ -63,10 +63,12 @@ https://github.com/bmuller/kademlia
 
 
 ##Authors
-James Howard
-[Dhyaanesh Mullagur]:https://github.com/dionesh mdhyanu@gmail.com
-[James Zhen]:https://github.com/jzhen4
+*James Howard
+*[Dhyaanesh Mullagur] - mdhyanu@gmail.com
+*[James Zhen]
 
 [Kademlia]:https://github.com/bmuller/kademlia
 [Twisted]:https://twistedmatrix.com/trac/
 [Kademlia distributed hash table]:https://pdos.csail.mit.edu/~petar/papers/maymounkov-kademlia-lncs.pdf
+[Dhyaanesh Mullagur]:https://github.com/dionesh
+[James Zhen]:https://github.com/jzhen4
