@@ -15,20 +15,19 @@ ETC
 
 ##Getting Started
 
-This P2P botnet requires Python 2.7 and the following two Python libraries:
+This P2P botnet requires Python 2.7 and the following Python libraries:
 * [Kademlia] - a Python implementation of the [Kademlia distributed hash table].
 * [Twisted] - an event-driven asynchronous network engine written in Python.
+* [Python Xlib](https://github.com/python-xlib/python-xlib) - Python X library which is used by the keylogging module
+* [Mechanize](http://wwwsearch.sourceforge.net/mechanize/) - a programmatic web browsing library used by the clickfraud module.
 
-On an Ubuntu machine all of the requirements can be installed by running the following two commands:
+On an Ubuntu machine all of the requirements can be installed by running the following commands:
 ```
-$ sudo apt-get install python-pip python-twisted-core
+$ sudo apt-get install python-pip python-twisted-core python-xlib
 $ pip install kademlia
+$ pip install mechanize
 ```
-Windows and MacOS have not been tested but should work if Python 2.7 has been installed:
-```
-pip install twisted
-pip install kademlia
-```
+Windows and MacOS have not been tested.
 
 In addition to the requirements to run the project, the botnet also needs three different machines that can communicate over a network. This can be done in virtual machines or physical machines, but each machine must be able to communicate with the other machines and must have the above dependencies installed.
 
