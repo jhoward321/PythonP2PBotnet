@@ -36,8 +36,7 @@ In addition to the requirements to run the project, the botnet also needs three 
 The botnet consists of three primary components:
 * botnet.py - client node that communicates with other nodes and waits for commands from a commander
 * commander.py - command module to send commands to enslaved nodes in the botnet
-* server.tac - a kademlia server for clients to bootstrap into the network. This is only needed if do not have an existing kademlia network in place.
-
+* server.tac - a kademlia server for clients to bootstrap into the network
 
 
 botnet.py spawns a p2p node that will communicate with other nodes. Using python kademlia library
@@ -65,6 +64,8 @@ https://github.com/bmuller/kademlia
 
 ##Authors
 James Howard
+[Dhyaanesh Mullagur]:https://github.com/dionesh mdhyanu@gmail.com
+[James Zhen]:https://github.com/jzhen4
 
 [Kademlia]:https://github.com/bmuller/kademlia
 [Twisted]:https://twistedmatrix.com/trac/
