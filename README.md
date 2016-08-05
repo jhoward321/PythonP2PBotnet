@@ -45,6 +45,7 @@ To use the botnet, perform the following commands on 3 separate machines.
 ```
 twistd -noy server.tac
 ```
+![pic1](https://raw.github.com/jhoward321/PythonP2PBotnet/Screenshots/server.png)
 * Step 2: Start Command Module
 ```
 python commander.py [bootstrap ip][bootstrap port][commander port]
@@ -53,7 +54,10 @@ python commander.py [bootstrap ip][bootstrap port][commander port]
 ```
 python botnet.py [bootstrap ip][bootstrap port][botnet port]
 ```
-At this point you should have 3 different windows open.
+At this point you should have 3 different windows open. From the commander window, you have the option to type in commands for the various modules that are included.
+
+Examples:
+
 
 In addition to the above components, there are several example modules that can be executed by the botnet such as a ddos attack module, a keylogger module, and a bitcoin mining module. Additional modules could easily be added. 
 
