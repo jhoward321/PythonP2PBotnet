@@ -4,7 +4,14 @@ This project is a proof of concept P2P botnet written in Python. It was a final 
 
 The main idea behind the project was to design a botnet architecture that was not only resistant to targeted takedown attempts, but also protects the identity of the botnet owner. This was accomplished by using a Kademlia DHT. Upon joining the network, bots query a specific hash in the DHT, post their unique ID, and then wait for an acknowledgement from a commander. A commander will constantly check the login location for new bots, and send out ACKs when new bots join the network. Commands are sent via specific query locations that are unique to each bot. Since every bot has a unique command location, its easy to send commands to individual clients while still being easy to send global commands to all clients. The commander never has direct contact with a bot, all communication is performed through DHT queries. This protects the commander from being compromised by a rogue client. This is just a proof of concept, but more features such as digitally signed commands could easily be added for additional security. 
 
-##Dependencies
+##Table of Contents
+
+Dependencies
+Features
+Authors
+ETC
+
+##Getting Started
 
 This P2P botnet requires Python 2.7 and the following two Python libraries:
 * [Kademlia] - a Python implementation of the [Kademlia distributed hash table].
@@ -19,7 +26,9 @@ Windows and MacOS have not been tested but should work if Python 2.7 has been in
 ```
 pip install kademlia
 ```
-##Getting Started
+
+In addition to the requirements to run the project, the botnet also needs 3 different machines that can communicate over a network. This can be done in virtual machines or physical machines, but each machine must be able to communicate with the other machines and must have the above dependencies installed.
+
 
 ##Features
 
