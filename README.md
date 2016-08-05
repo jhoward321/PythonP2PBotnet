@@ -46,8 +46,6 @@ twistd -noy server.tac
 ```
 ![pic1](Screenshots/server.png)
 * Step 2: Start Command Module
-
-*Note: default bootstrap port is 8468, this can be changed in server.tac*
 ```
 python commander.py [bootstrap ip][bootstrap port][commander port]
 ```
