@@ -45,7 +45,7 @@ To use the botnet, perform the following commands on 3 separate machines.
 ```
 twistd -noy server.tac
 ```
-![pic1](https://raw.github.com/jhoward321/PythonP2PBotnet/Screenshots/server.png)
+![pic1](Screenshots/server.png)
 * Step 2: Start Command Module
 ```
 python commander.py [bootstrap ip][bootstrap port][commander port]
