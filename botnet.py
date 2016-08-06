@@ -4,7 +4,7 @@ from kademlia.network import Server
 from collections import Counter
 import subprocess, time, sys, hashlib, time
 #these imports below are our own scripts that are run as commands
-import keylogger,ddos, mine, clickFraud
+#import keylogger,ddos, mine, clickFraud
 
 # I'm using a kademlia DHT protocol. I built most of this on top of Brian Muller's kademlia python implementation which
 # he so graciously provided free of charge. https://github.com/bmuller/kademlia I chose kademlia over chord because it has some advantages in both simplicity

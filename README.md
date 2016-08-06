@@ -11,6 +11,7 @@ This P2P botnet requires Python 2.7 and the following Python libraries:
 * [Twisted] - an event-driven asynchronous network engine written in Python.
 * [Python Xlib](https://github.com/python-xlib/python-xlib) - Python X library which is used by the keylogging module
 * [Mechanize](http://wwwsearch.sourceforge.net/mechanize/) - a programmatic web browsing library used by the clickfraud module
+* [Requests](http://docs.python-requests.org/en/master/user/install/) - a simple HTTP library used by upload module
 
 On an Ubuntu machine all of the requirements can be installed by running the following commands:
 ```
