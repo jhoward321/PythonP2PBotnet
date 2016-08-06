@@ -61,7 +61,7 @@ There are a number of ways that this botnet could be improved. This was my first
 ##Authors
 * [James Howard](https://github.com/jhoward321) - *Botnet implementation and keylogging module* - jhoward321@gmail.com
 * [Dhyaanesh Mullagur](https://github.com/dionesh) - *Bitcoin mining module* - mdhyanu@gmail.com
-* [James Zhen](https://github.com/jzhen4) - *DDOS, upload, download modules* - jzhen4@illinois.edu
+* [James Zhen](https://github.com/jzhen4) - *DDOS, clickfraud, upload, download modules* - jzhen4@illinois.edu
 
 ##License
 
