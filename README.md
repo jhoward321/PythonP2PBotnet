@@ -16,10 +16,10 @@ ETC
 ##Getting Started
 
 This P2P botnet requires Python 2.7 and the following Python libraries:
-* [Kademlia] - a Python implementation of the [Kademlia distributed hash table].
+* [Kademlia] - a Python implementation of the [Kademlia distributed hash table]
 * [Twisted] - an event-driven asynchronous network engine written in Python.
 * [Python Xlib](https://github.com/python-xlib/python-xlib) - Python X library which is used by the keylogging module
-* [Mechanize](http://wwwsearch.sourceforge.net/mechanize/) - a programmatic web browsing library used by the clickfraud module.
+* [Mechanize](http://wwwsearch.sourceforge.net/mechanize/) - a programmatic web browsing library used by the clickfraud module
 
 On an Ubuntu machine all of the requirements can be installed by running the following commands:
 ```
@@ -43,7 +43,6 @@ To use the botnet, perform the following commands on 3 separate machines.
 ```
 twistd -noy server.tac
 ```
-![pic1](Screenshots/server.png)
 * Step 2: Start Command Module
 ```
 python commander.py [bootstrap ip][bootstrap port][commander port]
@@ -56,8 +55,9 @@ python botnet.py [bootstrap ip][bootstrap port][botnet port]
 ```
 At this point you should have 3 different windows open. From the commander window, you have the option to type in commands for the various modules that are included.
 
-Examples:
 
+*Server window:*
+![pic1](Screenshots/server.png)
 
 In addition to the above components, there are several example modules that can be executed by the botnet such as a ddos attack module, a keylogger module, and a bitcoin mining module. Additional modules could easily be added. 
 
