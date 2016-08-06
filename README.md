@@ -10,6 +10,8 @@ This P2P botnet requires Python 2.7 and the following Python libraries:
 * [Kademlia] - a Python implementation of the [Kademlia distributed hash table]
 * [Twisted] - an event-driven asynchronous network engine written in Python.
 * [Python Xlib](https://github.com/python-xlib/python-xlib) - Python X library which is used by the keylogging module
+
+*Optional dependencies for non-tested modules:*
 * [Mechanize](http://wwwsearch.sourceforge.net/mechanize/) - a programmatic web browsing library used by the clickfraud module
 * [Requests](http://docs.python-requests.org/en/master/user/install/) - a simple HTTP library used by upload module
 
@@ -18,6 +20,7 @@ On an Ubuntu machine all of the requirements can be installed by running the fol
 $ sudo apt-get install python-pip python-twisted-core python-xlib
 $ pip install kademlia
 $ pip install mechanize
+$ pip install requests
 ```
 Windows and MacOS have not been tested.
 
@@ -57,7 +60,7 @@ In addition to the above components, there are several example modules that can 
 
 ##Possible Improvements
 
-There are a number of ways that this botnet could be improved. This was my first time learning the Twisted framework, so some of the code structure could be improved, primarily the botnet.py code. In addition I would add more security features including digitally signed commands, and more unpredictable check in hash locations. This project was a quick and dirty proof of concept that was quickly hacked together. Another improvement I would have made would be to improve the module section for botnet commands. Right now the botnet is sending cleartext commands in the DHT but these should really be encrypted, signed, and possibly serializable objects. The commands were thrown in after the basic networking architecture was implemented, and the example modules were developed separately so that we had to hack together a quick and dirty solution to get them to play together. Not all the modules have been extensively tested and could use improvement.
+There are a number of ways that this botnet could be improved. This was my first time learning the Twisted framework, so some of the code structure could be improved, primarily the botnet.py code. In addition I would add more security features including digitally signed commands, and more unpredictable check in hash locations. This project was a quick and dirty proof of concept that was quickly hacked together. Another improvement I would have made would be to improve the module section for botnet commands. Right now the botnet is sending cleartext commands in the DHT but these should really be encrypted, signed, and possibly serializable objects. The commands were thrown in after the basic networking architecture was implemented, and the example modules were developed separately so that we had to hack together a quick and dirty solution to get them to play together. Not all the modules have been extensively tested and could use improvement. 
 
 ##Authors
 * [James Howard](https://github.com/jhoward321) - *Botnet implementation and keylogging module* - jhoward321@gmail.com
