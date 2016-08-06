@@ -65,7 +65,9 @@ At this point you should have 3 different windows open. From the commander windo
 
 In addition to the above components, there are several example modules that can be executed by the botnet. I wrote the keylogging module, so I will use it as an example.
 
-*Example of keylog logs*
+Typing the command *KEYLOG* into the commander window will initiate keylogging on all client bots.
+
+*Example of keylogging*
 
 ![pic4](Screenshots/keylogexample.png)
 

