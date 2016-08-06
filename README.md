@@ -8,7 +8,7 @@ The main idea behind the project was to design a botnet architecture that was no
 
 This P2P botnet requires Python 2.7 and the following Python libraries:
 * [Kademlia] - a Python implementation of the [Kademlia distributed hash table]
-* [Twisted] - an event-driven asynchronous network engine written in Python.
+* [Twisted] - an event-driven asynchronous network engine written in Python
 * [Python Xlib](https://github.com/python-xlib/python-xlib) - Python X library which is used by the keylogging module
 
 *Optional dependencies for non-tested modules:*
@@ -51,11 +51,23 @@ python botnet.py [bootstrap ip][bootstrap port][botnet port]
 At this point you should have 3 different windows open. From the commander window, you have the option to type in commands for the various modules that are included.
 
 
-*Server window:*
+*Server Window:*
 
-![pic1](Screenshots/server.png)
+![pic1](Screenshots/serverexample.png)
 
-In addition to the above components, there are several example modules that can be executed by the botnet such as a ddos attack module, a keylogger module, and a bitcoin mining module. Additional modules could easily be added. 
+*Command Window:*
+
+![pic2](Screenshots/commanderkeylog1.png)
+
+*Botnet Window:*
+
+![pic3](Screenshots/botnetkeylog1.png)
+
+In addition to the above components, there are several example modules that can be executed by the botnet. I wrote the keylogging module, so I will use it as an example.
+
+*Example of keylog logs*
+
+![pic4](Screenshots/keylogexample.png)
 
 
 ##Possible Improvements
